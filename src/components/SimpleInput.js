@@ -30,7 +30,7 @@ const SimpleInput = (props) => {
     event.preventDefault();
   
 
-    if (!enteredNameIsValid) {
+    if (!formIsValid) {
       return;
     }
     console.log(enteredName);
