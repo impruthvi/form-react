@@ -1,4 +1,3 @@
-import { useState } from "react";
 import useInput from "../hooks/use-input";
 
 const SimpleInput = (props) => {
@@ -11,9 +10,18 @@ const SimpleInput = (props) => {
     reset: resetNameInput
   } = useInput(value=>value.trim() !=='');
 
+  const {
+    value: enteredEmail,
+    isValid:enteredEmailIsValid,
+    hasError: emailInputHasError,
+    valueChangeHandler: emailChangeHandler,
+    inputBlurHandler:emailBlurHandler,
+    reset: resetEmailInput
+  } = useInput(value=>value.includes('@'));
+
 
   let formIsValid = false;
-  if (enteredNameIsValid) {
+  if (enteredNameIsValid && enteredEmailIsValid) {
     formIsValid = true;
   }
 
@@ -26,10 +34,16 @@ const SimpleInput = (props) => {
       return;
     }
     console.log(enteredName);
+    console.log(enteredEmail);
     resetNameInput();
+    resetEmailInput();
   };
 
   const nameInputClass = nameInputHasError
+    ? "form-control invalid"
+    : "form-control";
+
+    const emailInputClass = emailInputHasError
     ? "form-control invalid"
     : "form-control";
   return (
@@ -47,6 +61,21 @@ const SimpleInput = (props) => {
           <p className="error-text">Name must not be empty</p>
         )}
       </div>
+
+      <div className={emailInputClass}>
+        <label htmlFor="name">Email</label>
+        <input
+          type="email"
+          id="email"
+          onChange={emailChangeHandler}
+          onBlur={emailBlurHandler}
+          value={enteredEmail}
+        />
+        {emailInputHasError && (
+          <p className="error-text">Enter Valid Email</p>
+        )}
+      </div>
+
       <div className="form-actions">
         <button disabled={!formIsValid}>Submit</button>
       </div>
